@@ -26,6 +26,6 @@ COPY --from=build /workspace/build/libs/*.jar /app/app.jar
 
 USER spring:spring
 
-EXPOSE 8081
+EXPOSE 8080
 
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/app.jar"]
