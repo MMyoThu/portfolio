@@ -18,7 +18,7 @@ WORKDIR /app
 
 RUN addgroup -S spring && adduser -S spring -G spring
 
-ENV SPRING_PROFILES_ACTIVE=prod
+ENV SPRING_PROFILES_ACTIVE=uat
 ENV SERVER_PORT=8081
 ENV JAVA_OPTS=""
 
