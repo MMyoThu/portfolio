@@ -1,0 +1,14 @@
+.git
+.gradle
+.idea
+.vscode
+build
+out
+bin
+*.iml
+*.iws
+*.ipr
+*.log
+.env
+Dockerfile
+docker-compose*.yml
