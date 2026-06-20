@@ -19,7 +19,7 @@ WORKDIR /app
 RUN addgroup -S spring && adduser -S spring -G spring
 
 ENV SPRING_PROFILES_ACTIVE=uat
-ENV SERVER_PORT=8081
+ENV SERVER_PORT=8080
 ENV JAVA_OPTS=""
 
 COPY --from=build /workspace/build/libs/*.jar /app/app.jar
