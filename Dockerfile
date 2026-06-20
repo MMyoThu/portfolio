@@ -21,6 +21,4 @@ COPY --from=build /workspace/build/libs/*.jar app.jar
 
 USER spring:spring
 
-EXPOSE 8080
-
 ENTRYPOINT ["sh", "-c", "exec java -Dserver.port=$PORT -Dserver.address=0.0.0.0 -jar app.jar"]
