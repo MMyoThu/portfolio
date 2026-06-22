@@ -33,7 +33,8 @@ public class JwtTokenProvider {
 
     @PostConstruct
     public void init() {
-        log.info("init jwt secret is {} ", jwtConfig.getSecret());
+        log.info("JWT secret length={}",
+                jwtConfig.getSecret() == null ? 0 : jwtConfig.getSecret().length());
         this.key = Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes());
     }
 
