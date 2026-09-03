@@ -9,24 +9,28 @@ import com.mta.portfolio.game.repository.GameScoreRepository;
 import com.mta.portfolio.game.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final GameScoreRepository gameScoreRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Game> getAllGames() {
         return gameRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GameScore> getLeaderboard(String gameCode) {
-        return gameScoreRepository.findTopByGameCodeOrderByScoreDesc(gameCode);
+        return gameScoreRepository.findByGameCodeOrderByScoreDesc(gameCode);
     }
 
     @Override
@@ -42,6 +46,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long getTotalGamesPlayed() {
         return gameScoreRepository.count();
     }

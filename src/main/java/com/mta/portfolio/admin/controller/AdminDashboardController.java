@@ -22,6 +22,6 @@ public class AdminDashboardController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ApiResponse<AdminDashboardResponse>> getDashboard() {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", adminDashboardService.getDashboard()));
+        return ResponseEntity.ok(ApiResponse.success(adminDashboardService.getDashboard()));
     }
 }

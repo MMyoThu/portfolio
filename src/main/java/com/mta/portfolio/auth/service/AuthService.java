@@ -7,7 +7,6 @@ import com.mta.portfolio.auth.dto.SignupRequest;
 
 public interface AuthService {
 
-
     LoginResponse login(LoginRequest loginRequest);
 
     LoginResponse signup(SignupRequest signupRequest);

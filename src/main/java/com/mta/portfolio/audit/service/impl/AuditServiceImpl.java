@@ -6,7 +6,9 @@ import com.mta.portfolio.audit.entity.AuditLog;
 import com.mta.portfolio.audit.repository.AuditLogRepository;
 import com.mta.portfolio.audit.service.AuditService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuditServiceImpl implements AuditService {
 
     private final AuditLogRepository auditLogRepository;
@@ -31,13 +34,14 @@ public class AuditServiceImpl implements AuditService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AuditDashboardResponse getDashboard() {
         long totalVisits = auditLogRepository.count();
         long totalVisitors = auditLogRepository.countBySessionIdIsNotNull();
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         long todaysVisits = auditLogRepository.countByVisitTimeGreaterThanEqual(startOfDay);
-        List<String> pages = auditLogRepository.findMostVisitedPages();
-        String mostVisitedPage = pages.isEmpty() ? null : pages.get(0);
+        List<String> pages = auditLogRepository.findMostVisitedPages(PageRequest.of(0, 1));
+        String mostVisitedPage = pages.isEmpty() ? null : pages.getFirst();
         return new AuditDashboardResponse(totalVisitors, totalVisits, mostVisitedPage, todaysVisits);
     }
 }

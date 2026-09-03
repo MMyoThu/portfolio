@@ -27,28 +27,28 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<Project>>> getProjects() {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", projectService.getAllProjects()));
+        return ResponseEntity.ok(ApiResponse.success(projectService.getAllProjects()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Project>> getProject(@PathVariable Long id) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", projectService.getProjectById(id)));
+        return ResponseEntity.ok(ApiResponse.success(projectService.getProjectById(id)));
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse<Project>> createProject(@Valid @RequestBody ProjectRequest request) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", projectService.createProject(request)));
+        return ResponseEntity.ok(ApiResponse.success(projectService.createProject(request)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Project>> updateProject(@PathVariable Long id,
                                                               @Valid @RequestBody ProjectRequest request) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", projectService.updateProject(id, request)));
+        return ResponseEntity.ok(ApiResponse.success(projectService.updateProject(id, request)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Object>> deleteProject(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable Long id) {
         projectService.deleteProject(id);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", null));
+        return ResponseEntity.ok(ApiResponse.success(null));
     }
 }

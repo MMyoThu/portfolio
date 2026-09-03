@@ -26,16 +26,16 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<Game>>> getGames() {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", gameService.getAllGames()));
+        return ResponseEntity.ok(ApiResponse.success(gameService.getAllGames()));
     }
 
     @GetMapping("/leaderboard/{gameCode}")
     public ResponseEntity<ApiResponse<List<GameScore>>> getLeaderboard(@PathVariable String gameCode) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", gameService.getLeaderboard(gameCode)));
+        return ResponseEntity.ok(ApiResponse.success(gameService.getLeaderboard(gameCode)));
     }
 
     @PostMapping("/score")
     public ResponseEntity<ApiResponse<GameScore>> submitScore(@Valid @RequestBody GameScoreRequest request) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", gameService.submitScore(request)));
+        return ResponseEntity.ok(ApiResponse.success(gameService.submitScore(request)));
     }
 }

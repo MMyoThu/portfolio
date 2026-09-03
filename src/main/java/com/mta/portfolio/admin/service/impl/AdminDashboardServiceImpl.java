@@ -8,9 +8,11 @@ import com.mta.portfolio.game.repository.GameScoreRepository;
 import com.mta.portfolio.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AdminDashboardServiceImpl implements AdminDashboardService {
 
     private final AuditLogRepository auditLogRepository;
@@ -20,10 +22,11 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
 
     @Override
     public AdminDashboardResponse getDashboard() {
-        long totalVisitors = auditLogRepository.countBySessionIdIsNotNull();
-        long totalProjects = projectRepository.count();
-        long totalMessages = contactMessageRepository.count();
-        long totalGamesPlayed = gameScoreRepository.count();
-        return new AdminDashboardResponse(totalVisitors, totalProjects, totalMessages, totalGamesPlayed);
+        return new AdminDashboardResponse(
+                auditLogRepository.countBySessionIdIsNotNull(),
+                projectRepository.count(),
+                contactMessageRepository.count(),
+                gameScoreRepository.count()
+        );
     }
 }

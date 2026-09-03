@@ -26,22 +26,22 @@ public class ContactController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<ContactMessage>> createContact(@Valid @RequestBody ContactRequest request) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", contactService.createContact(request)));
+        return ResponseEntity.ok(ApiResponse.success(contactService.createContact(request)));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<ContactMessage>>> listContacts() {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", contactService.getAllContacts()));
+        return ResponseEntity.ok(ApiResponse.success(contactService.getAllContacts()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ContactMessage>> getContact(@PathVariable Long id) {
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", contactService.getContactById(id)));
+        return ResponseEntity.ok(ApiResponse.success(contactService.getContactById(id)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Object>> deleteContact(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteContact(@PathVariable Long id) {
         contactService.deleteContact(id);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Success", null));
+        return ResponseEntity.ok(ApiResponse.success(null));
     }
 }

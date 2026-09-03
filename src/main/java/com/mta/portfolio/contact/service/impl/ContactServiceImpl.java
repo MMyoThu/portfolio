@@ -7,11 +7,13 @@ import com.mta.portfolio.contact.repository.ContactMessageRepository;
 import com.mta.portfolio.contact.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ContactServiceImpl implements ContactService {
 
     private final ContactMessageRepository repository;
@@ -27,20 +29,27 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ContactMessage> getAllContacts() {
         return repository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ContactMessage getContactById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("ContactMessage", "id", id));
+        return findContact(id);
     }
 
     @Override
     public void deleteContact(Long id) {
-        ContactMessage message = repository.findById(id)
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("ContactMessage", "id", id);
+        }
+        repository.deleteById(id);
+    }
+
+    private ContactMessage findContact(Long id) {
+        return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ContactMessage", "id", id));
-        repository.delete(message);
     }
 }
