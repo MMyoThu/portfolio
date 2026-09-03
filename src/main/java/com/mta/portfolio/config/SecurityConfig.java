@@ -1,10 +1,8 @@
 package com.mta.portfolio.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mta.portfolio.auth.service.AdminUserDetailsService;
 import com.mta.portfolio.auth.util.JwtAuthenticationFilter;
 import com.mta.portfolio.common.constant.AppConstants;
-import com.mta.portfolio.common.response.ApiResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -28,6 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +46,6 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AdminUserDetailsService adminUserDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -98,6 +96,7 @@ public class SecurityConfig {
     private void writeJsonError(HttpServletResponse response, HttpStatus status, String message) throws IOException {
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        objectMapper.writeValue(response.getOutputStream(), ApiResponse.failure(message));
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.getWriter().write("{\"success\":false,\"message\":\"" + message + "\",\"data\":null}");
     }
 }
